@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProductDataDeveloperExamModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="user_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Prod_Qty">
+          <Key>
+            <PropertyRef Name="user_prod_qty_id" />
+          </Key>
+          <Property Name="user_prod_qty_id" Type="int" Nullable="false" />
+          <Property Name="user_prod_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Product">
+          <Key>
+            <PropertyRef Name="user_prod_id" />
+          </Key>
+          <Property Name="user_prod_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserProdTable">
+          <End Role="User_Product" Type="Self.User_Product" Multiplicity="1" />
+          <End Role="User_Prod_Qty" Type="Self.User_Prod_Qty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Product">
+              <PropertyRef Name="user_prod_id" />
+            </Principal>
+            <Dependent Role="User_Prod_Qty">
+              <PropertyRef Name="user_prod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTable">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User_Product" Type="Self.User_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="User_Product">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProductDataDeveloperExamModelStoreContainer">
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Prod_Qty" EntityType="Self.User_Prod_Qty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Product" EntityType="Self.User_Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UserProdTable" Association="Self.FK_UserProdTable">
+            <End Role="User_Product" EntitySet="User_Product" />
+            <End Role="User_Prod_Qty" EntitySet="User_Prod_Qty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTable" Association="Self.FK_UserTable">
+            <End Role="User" EntitySet="User" />
+            <End Role="User_Product" EntitySet="User_Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProductDataDeveloperExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="user_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User_Product" Relationship="Self.FK_UserTable" FromRole="User" ToRole="User_Product" />
+        </EntityType>
+        <EntityType Name="User_Prod_Qty">
+          <Key>
+            <PropertyRef Name="user_prod_qty_id" />
+          </Key>
+          <Property Name="user_prod_qty_id" Type="Int32" Nullable="false" />
+          <Property Name="user_prod_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User_Product" Relationship="Self.FK_UserProdTable" FromRole="User_Prod_Qty" ToRole="User_Product" />
+        </EntityType>
+        <EntityType Name="User_Product">
+          <Key>
+            <PropertyRef Name="user_prod_id" />
+          </Key>
+          <Property Name="user_prod_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserTable" FromRole="User_Product" ToRole="User" />
+          <NavigationProperty Name="User_Prod_Qty" Relationship="Self.FK_UserProdTable" FromRole="User_Product" ToRole="User_Prod_Qty" />
+        </EntityType>
+        <Association Name="FK_UserTable">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User_Product" Type="Self.User_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="User_Product">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProdTable">
+          <End Role="User_Product" Type="Self.User_Product" Multiplicity="1" />
+          <End Role="User_Prod_Qty" Type="Self.User_Prod_Qty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Product">
+              <PropertyRef Name="user_prod_id" />
+            </Principal>
+            <Dependent Role="User_Prod_Qty">
+              <PropertyRef Name="user_prod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DashBoardContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="User_Prod_Qty" EntityType="Self.User_Prod_Qty" />
+          <EntitySet Name="User_Product" EntityType="Self.User_Product" />
+          <AssociationSet Name="FK_UserTable" Association="Self.FK_UserTable">
+            <End Role="User" EntitySet="Users" />
+            <End Role="User_Product" EntitySet="User_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProdTable" Association="Self.FK_UserProdTable">
+            <End Role="User_Product" EntitySet="User_Product" />
+            <End Role="User_Prod_Qty" EntitySet="User_Prod_Qty" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProductDataDeveloperExamModelStoreContainer" CdmEntityContainer="DashBoardContext">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ProductDataDeveloperExamModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Prod_Qty">
+            <EntityTypeMapping TypeName="ProductDataDeveloperExamModel.User_Prod_Qty">
+              <MappingFragment StoreEntitySet="User_Prod_Qty">
+                <ScalarProperty Name="user_prod_qty_id" ColumnName="user_prod_qty_id" />
+                <ScalarProperty Name="user_prod_id" ColumnName="user_prod_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Product">
+            <EntityTypeMapping TypeName="ProductDataDeveloperExamModel.User_Product">
+              <MappingFragment StoreEntitySet="User_Product">
+                <ScalarProperty Name="user_prod_id" ColumnName="user_prod_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
